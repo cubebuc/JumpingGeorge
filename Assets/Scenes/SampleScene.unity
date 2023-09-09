@@ -823,6 +823,7 @@ MonoBehaviour:
   acceleration: 10
   deceleration: 100
   jumpForce: 10
+  ghostFlySpeed: 10
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
