@@ -29,7 +29,7 @@ public class CameraController : MonoBehaviour
         cameraTransform.rotation = xQuat * yQuat;
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         var xQuat = Quaternion.AngleAxis(rotation.x, Vector3.up);
         transform.rotation = xQuat;
