@@ -13,24 +13,32 @@ public class Placing : MonoBehaviour
 
     [SerializeField] Transform cameraTransform;
 
+    [Header("Materials")]
+    [SerializeField] Material defaultMaterial;
+    [SerializeField] Material transparentMaterial;
+
+    public bool canPlace = false;
+
     GameObject trapObject;
 
     void Update()
     {
+        if (GameManager.currentState != GameManager.State.PLACING)
+            return;
         if (!trapObject && Input.GetMouseButtonDown(1))
         {
             Vector3 position = transform.position + cameraTransform.forward * distance;
             trapObject = Instantiate(objectPrefab, position, Quaternion.identity);
+            trapObject.GetComponent<MeshRenderer>().material = transparentMaterial;
+            
+
         }
 
         if (trapObject)
         {
             if(Input.GetMouseButton(0))
             {
-                MeshRenderer meshRenderer = trapObject.GetComponent<MeshRenderer>();
-                Color color = meshRenderer.material.color;
-                color.a = 1;
-                meshRenderer.material.color = color;
+                trapObject.GetComponent<MeshRenderer>().material = defaultMaterial;
                 trapObject = null;
                 return;
             }
@@ -42,6 +50,7 @@ public class Placing : MonoBehaviour
             trapObject.transform.position = position;
         }
 
+        //Debug.Log(Mathf.Clamp(distance + Input.mouseScrollDelta.x * scrollStrength, minDistance, maxDistance) + " " + Input.mouseScrollDelta.x);
         distance = Mathf.Clamp(distance + Input.mouseScrollDelta.y * scrollStrength, minDistance, maxDistance);
     }
 }

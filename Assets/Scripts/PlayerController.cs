@@ -28,8 +28,15 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     CapsuleCollider capsuleCollider;
 
-    bool ghostMode;
     bool canWallrun;
+    public bool ghostMode = false;
+
+    public void SetGhostMode(bool newState)
+    {
+        rb.useGravity = !newState;
+        capsuleCollider.enabled = !newState;
+        ghostMode = newState;
+    }
 
     void Start()
     {
@@ -53,13 +60,6 @@ public class PlayerController : MonoBehaviour
 
                 StartCoroutine(IWallrunDelay());
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            ghostMode = !ghostMode;
-            rb.useGravity = !ghostMode;
-            capsuleCollider.enabled = !ghostMode;
         }
     }
 
