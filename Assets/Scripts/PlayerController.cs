@@ -51,12 +51,12 @@ public class PlayerController : MonoBehaviour
         Collider wallCollider = IsWallrunning();
         if (!ghostMode && Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || wallCollider))
         {
-            rb.velocity = Vector3.up * jumpForce;
+            rb.velocity += Vector3.up * jumpForce;
 
             if (wallCollider)
             {
-                Vector3 force = wallCheck.position - wallCollider.ClosestPointOnBounds(wallCheck.position);
-                rb.velocity += force * walljumpForce;
+                Vector3 direction = (transform.position - wallCollider.ClosestPointOnBounds(transform.position)).normalized;
+                rb.velocity += direction * walljumpForce;
 
                 StartCoroutine(IWallrunDelay());
             }

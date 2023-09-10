@@ -653,7 +653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 10
   sprintSpeed: 15
-  acceleration: 10
+  acceleration: 5
   deceleration: 100
   jumpForce: 10
   ghostFlySpeed: 10
@@ -665,10 +665,10 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
-  wallCheck: {fileID: 0}
+  wallCheck: {fileID: 1325514292}
   wallCheckRadius: 0.55
   wallrunDelay: 0.5
-  walljumpForce: 5
+  walljumpForce: 20
   ghostMode: 0
 --- !u!54 &681164738
 Rigidbody:
