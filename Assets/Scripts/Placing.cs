@@ -13,6 +13,10 @@ public class Placing : MonoBehaviour
 
     [SerializeField] Transform cameraTransform;
 
+    [Header("Materials")]
+    [SerializeField] Material defaultMaterial;
+    [SerializeField] Material transparentMaterial;
+
     public bool canPlace = false;
 
     GameObject trapObject;
@@ -25,16 +29,16 @@ public class Placing : MonoBehaviour
         {
             Vector3 position = transform.position + cameraTransform.forward * distance;
             trapObject = Instantiate(objectPrefab, position, Quaternion.identity);
+            trapObject.GetComponent<MeshRenderer>().material = transparentMaterial;
+            
+
         }
 
         if (trapObject)
         {
             if(Input.GetMouseButton(0))
             {
-                MeshRenderer meshRenderer = trapObject.GetComponent<MeshRenderer>();
-                Color color = meshRenderer.material.color;
-                color.a = 1;
-                meshRenderer.material.color = color;
+                trapObject.GetComponent<MeshRenderer>().material = defaultMaterial;
                 trapObject = null;
                 return;
             }
