@@ -20,11 +20,12 @@ public class GameManager : MonoBehaviour
         PLAYING,
         SPECTATING
     }
-
-    [SerializeField] State currentState;
+    
+    public static State currentState;
 
     public void SetCurrentState(State newState)
     {
+
         switch (newState)
         {
             case State.WAITING:
@@ -35,15 +36,15 @@ public class GameManager : MonoBehaviour
                 break;
             case State.PLACING:
                 Debug.Log("Placing");
-                player.GetComponent<PlayerController>().setGhostMode(true);
+                player.GetComponent<PlayerController>().SetGhostMode(true);
                 break;
             case State.PLAYING:
                 Debug.Log("Playing");
-                player.GetComponent<PlayerController>().setGhostMode(false);
+                player.GetComponent<PlayerController>().SetGhostMode(false);
                 break;
             case State.SPECTATING:
                 Debug.Log("Spectating");
-                player.GetComponent<PlayerController>().setGhostMode(true);
+                player.GetComponent<PlayerController>().SetGhostMode(true);
                 break;
             default:
                 break;

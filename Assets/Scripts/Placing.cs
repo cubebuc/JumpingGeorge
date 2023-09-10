@@ -13,10 +13,14 @@ public class Placing : MonoBehaviour
 
     [SerializeField] Transform cameraTransform;
 
+    public bool canPlace = false;
+
     GameObject trapObject;
 
     void Update()
     {
+        if (GameManager.currentState != GameManager.State.PLACING)
+            return;
         if (!trapObject && Input.GetMouseButtonDown(1))
         {
             Vector3 position = transform.position + cameraTransform.forward * distance;

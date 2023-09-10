@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     public bool ghostMode = false;
 
-    public void setGhostMode(bool newState)
+    public void SetGhostMode(bool newState)
     {
         rb.useGravity = !newState;
         capsuleCollider.enabled = !newState;
