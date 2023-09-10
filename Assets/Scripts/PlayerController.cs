@@ -20,13 +20,19 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     CapsuleCollider capsuleCollider;
 
-    bool ghostMode;
+    public bool ghostMode = false;
+
+    public void setGhostMode(bool newState)
+    {
+        rb.useGravity = !newState;
+        capsuleCollider.enabled = !newState;
+        ghostMode = newState;
+    }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-        ghostMode = false;
     }
 
     void Update()
@@ -34,13 +40,6 @@ public class PlayerController : MonoBehaviour
         if (!ghostMode && Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             rb.velocity = Vector3.up * jumpForce;
-        }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            ghostMode = !ghostMode;
-            rb.useGravity = !ghostMode;
-            capsuleCollider.enabled = !ghostMode;
         }
     }
 

@@ -42,7 +42,7 @@ public class Placing : MonoBehaviour
             trapObject.transform.position = position;
         }
 
-        Debug.Log(Mathf.Clamp(distance + Input.mouseScrollDelta.x * scrollStrength, minDistance, maxDistance) + " " + Input.mouseScrollDelta.x);
+        //Debug.Log(Mathf.Clamp(distance + Input.mouseScrollDelta.x * scrollStrength, minDistance, maxDistance) + " " + Input.mouseScrollDelta.x);
         distance = Mathf.Clamp(distance + Input.mouseScrollDelta.y * scrollStrength, minDistance, maxDistance);
     }
 }
