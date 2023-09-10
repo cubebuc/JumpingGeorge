@@ -16,24 +16,43 @@ public class PlayerController : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] LayerMask groundLayer;
     [SerializeField] Transform groundCheck;
+    [SerializeField] float groundCheckRadius = 0.4f;
+
+    [Header("Wallrun Check")]
+    [SerializeField] LayerMask wallLayer;
+    [SerializeField] Transform wallCheck;
+    [SerializeField] float wallCheckRadius = 0.55f;
+    [SerializeField] float wallrunDelay = 0.5f;
+    [SerializeField] float walljumpForce = 5f;
 
     Rigidbody rb;
     CapsuleCollider capsuleCollider;
 
     bool ghostMode;
+    bool canWallrun;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         ghostMode = false;
+        canWallrun = true;
     }
 
     void Update()
     {
-        if (!ghostMode && Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        Collider wallCollider = IsWallrunning();
+        if (!ghostMode && Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || wallCollider))
         {
             rb.velocity = Vector3.up * jumpForce;
+
+            if (wallCollider)
+            {
+                Vector3 force = wallCheck.position - wallCollider.ClosestPointOnBounds(wallCheck.position);
+                rb.velocity += force * walljumpForce;
+
+                StartCoroutine(IWallrunDelay());
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.G))
@@ -52,6 +71,11 @@ public class PlayerController : MonoBehaviour
 
         Vector3 target = rb.velocity.y * Vector3.up + (x * transform.right + z * transform.forward).normalized * speed;
 
+        if (canWallrun && IsWallrunning())
+        {
+            target.y *= 0.2f;
+        }
+            
         //GHOST MODE INPUT
         if (ghostMode)
         {
@@ -63,13 +87,24 @@ public class PlayerController : MonoBehaviour
                 target.y = 0;
         }
 
-
-
         rb.velocity = Vector3.Lerp(rb.velocity, target, acceleration * Time.fixedDeltaTime);
     }
 
     bool IsGrounded()
     {
-        return Physics.CheckSphere(groundCheck.position + Vector3.up * 0.2f, 0.4f, groundLayer);
+        return Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
+    }
+
+    Collider IsWallrunning()
+    {
+        Collider[] colliders = Physics.OverlapSphere(wallCheck.position, wallCheckRadius, wallLayer);
+        return colliders.Length == 0 ? null : colliders[0];
+    }
+
+    IEnumerator IWallrunDelay()
+    {
+        canWallrun = false;
+        yield return new WaitForSeconds(wallrunDelay);
+        canWallrun = true;
     }
 }
