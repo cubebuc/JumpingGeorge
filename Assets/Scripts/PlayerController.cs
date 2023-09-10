@@ -49,6 +49,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Collider wallCollider = IsWallrunning();
+
+        if (!ghostMode && Input.GetKeyUp(KeyCode.Space) && rb.velocity.y > 0 && !wallCollider)
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y / 2, rb.velocity.z);
+
         if (!ghostMode && Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || wallCollider))
         {
             rb.velocity += Vector3.up * jumpForce;
